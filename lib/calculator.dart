@@ -14,6 +14,68 @@ class calculatorApp extends State<calculator> {
   String? operetor;
   bool isNewInput = false;
 
+  void inputAngka(String angka) {
+    setState(() {
+      if (display == "0" || isNewInput) {
+        display = angka;
+      } else {
+        if (angka == "." && display.contains(".")) return;
+        display += angka;
+      }
+    });
+  }
+
+  void pilihOperator(String simbol) {
+    setState(() {
+      firstOperand = double.tryParse(display);
+      operetor = simbol;
+      history = "$display $simbol";
+      isNewInput = true;
+    });
+  }
+
+  void hitungHasil() {
+    if (firstOperand == null || operetor == null) return;
+
+    double secondOperand = double.parse(display);
+    double hasil = 0;
+
+    switch (operetor) {
+      case "+":
+        hasil = firstOperand! + secondOperand;
+        break;
+      case "-":
+        hasil = firstOperand! - secondOperand;
+        break;
+      case "x":
+        hasil = firstOperand! * secondOperand;
+        break;
+      case "/":
+        hasil = firstOperand! / secondOperand;
+        break;
+      case "%":
+        hasil = firstOperand! % secondOperand;
+        break;
+    }
+    setState(() {
+      history = "$firstOperand $operetor $secondOperand =";
+      display = hasil.toString().replaceAll(RegExp(r'\.0$'), '');
+      firstOperand = null;
+      operetor = null;
+      isNewInput = true;
+    });
+  }
+
+  void reset() {
+    setState(() {
+      display = "0";
+      history = "0";
+      firstOperand = null;
+      operetor = null;
+      isNewInput = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +173,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: reset,
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -132,6 +195,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => pilihOperator("%"),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -144,6 +208,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => pilihOperator("/"),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -160,6 +225,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka("9"),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -172,6 +238,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('8'),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -184,6 +251,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('7'),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -196,6 +264,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => pilihOperator("x"),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -212,6 +281,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('6'),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -224,18 +294,20 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('5'),
                                 ),
                               ),
                               SizedBox(width: 5),
                               Expanded(
                                 child: CalcButton(
                                   child: Text(
-                                    "5",
+                                    "4",
                                     style: TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('4'),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -248,6 +320,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => pilihOperator("-"),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -264,6 +337,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('3'),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -276,6 +350,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('2'),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -288,6 +363,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('1'),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -300,6 +376,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => pilihOperator("+"),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -318,6 +395,7 @@ class calculatorApp extends State<calculator> {
                                     ),
                                   ),
                                   isSquare: false,
+                                  ontap: () => inputAngka("0"),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -330,6 +408,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: () => inputAngka('.'),
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -342,6 +421,7 @@ class calculatorApp extends State<calculator> {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  ontap: hitungHasil,
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -362,16 +442,18 @@ class calculatorApp extends State<calculator> {
 }
 
 class CalcButton extends StatelessWidget {
-  const CalcButton({super.key, required this.child, this.isSquare = true});
+  const CalcButton({super.key, required this.child, this.isSquare = true, this.ontap});
 
   final Widget child;
   final bool isSquare;
+  final VoidCallback? ontap;
 
   @override
   Widget build(BuildContext context) {
     Widget button = Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
+        onTap: ontap,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -385,10 +467,7 @@ class CalcButton extends StatelessWidget {
     if (isSquare == true) {
       return AspectRatio(aspectRatio: 1, child: button);
     } else {
-      return SizedBox(
-        height: 104,
-        child: button
-      );
+      return SizedBox(height: 104, child: button);
     }
   }
 }
