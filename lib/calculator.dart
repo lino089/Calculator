@@ -8,6 +8,12 @@ class calculator extends StatefulWidget {
 }
 
 class calculatorApp extends State<calculator> {
+  String display = "0";
+  String history = "0";
+  double? firstOperand;
+  String? operetor;
+  bool isNewInput = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,19 +25,370 @@ class calculatorApp extends State<calculator> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [Color(0xFF2E1A47), Color(0xFF1A1A2E)],
-              )
+              ),
             ),
           ),
           SafeArea(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 15,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.menu),
+                        iconSize: 28,
+                        color: Colors.white.withValues(alpha: 0.8),
+                      ),
+                      Text(
+                        'STANDARD',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.7),
+                          letterSpacing: 4,
+                          fontSize: 18,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.history),
+                        iconSize: 28,
+                        color: Colors.white.withValues(alpha: 0.8),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 24, bottom: 24),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
 
+                      children: [
+                        Text(
+                          history,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white.withValues(alpha: 0.7),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          display,
+                          style: TextStyle(fontSize: 30, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "AC",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Icon(
+                                    Icons.exposure,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "%",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "/",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "9",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "8",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "7",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "X",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "6",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "5",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "5",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "-",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "3",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "2",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "1",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "+",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: CalcButton(
+                                  child: Text(
+                                    "0",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  isSquare: false,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    ".",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CalcButton(
+                                  child: Text(
+                                    "=",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
-            ) ,
-          )
+            ),
+          ),
         ],
       ),
     );
+  }
+}
+
+class CalcButton extends StatelessWidget {
+  const CalcButton({super.key, required this.child, this.isSquare = true});
+
+  final Widget child;
+  final bool isSquare;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget button = Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.white24,
+          ),
+          child: Center(child: child),
+        ),
+      ),
+    );
+
+    if (isSquare == true) {
+      return AspectRatio(aspectRatio: 1, child: button);
+    } else {
+      return SizedBox(
+        height: 104,
+        child: button
+      );
+    }
   }
 }
